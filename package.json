@@ -1,0 +1,29 @@
+{
+  "name": "postcss-pseudo-classes",
+  "version": "0.1.0",
+  "description": "PostCSS plugin to convert pseudo-classes to classes for testing purposes",
+  "keywords": [
+    "postcss",
+    "css",
+    "postcss-plugin",
+    "css test",
+    "pseudo classes"
+  ],
+  "author": "Giuseppe Gurgone <ggurgone@gmail.com>",
+  "license": "MIT",
+  "repository": "giuseppeg/postcss-pseudo-classes",
+  "bugs": {
+    "url": "https://github.com/giuseppeg/postcss-pseudo-classes/issues"
+  },
+  "homepage": "https://github.com/giuseppeg/postcss-pseudo-classes",
+  "dependencies": {
+    "postcss": "^5.0.10"
+  },
+  "devDependencies": {
+    "ava": "^0.7.0",
+    "eslint": "^1.10.2"
+  },
+  "scripts": {
+    "test": "ava test/ && eslint *.js **/*js"
+  }
+}

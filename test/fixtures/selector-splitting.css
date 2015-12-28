@@ -1,0 +1,22 @@
+/**
+ * Selector splitting
+ */
+
+a { content: ''; }
+a,b { content: ''; }
+a ,b { content: ''; }
+a , b { content: ''; }
+a, b { content: ''; }
+a,
+b { content: ''; }
+a ,
+b { content: ''; }
+a, b,
+i { content: ''; }
+a ,
+ b,
+i { content: ''; }
+a ,
+
+ b,
+i { content: ''; }
