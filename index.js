@@ -9,6 +9,14 @@ module.exports = postcss.plugin('postcss-pseudo-classes', function (options) {
     ':root': true
   };
 
+  var prefix = options.prefix || '\\:';
+
+  var pseudoClassWhitelist = {};
+
+  (options.psuedoClassWhitelist || []).forEach(function (whiteListItem) {
+    pseudoClassWhitelist[whiteListItem.trim()] = true;
+  });
+
   (options.blacklist || []).forEach(function (blacklistItem) {
     blacklist[blacklistItem] = true;
   });
@@ -42,29 +50,37 @@ module.exports = postcss.plugin('postcss-pseudo-classes', function (options) {
             0,
             selectorPart.length - pseudos.join('').length
           );
-          var classPseudos = pseudos.map(function (pseudo) {
+          var classPseudos = pseudos.map(function (inputPseudo) {
             // Ignore pseudo-elements!
-            if (pseudo.match(/^::/)) {
-              return pseudo;
+            if (inputPseudo.match(/^::/)) {
+              return inputPseudo;
             }
 
             // Ignore ':before' and ':after'
             if (
               options.preserveBeforeAfter &&
-              [':before', ':after'].indexOf(pseudo) !== -1
+              [':before', ':after'].indexOf(inputPseudo) !== -1
             ) {
-              return pseudo;
+              return inputPseudo;
             }
 
             // Kill the colon
-            pseudo = pseudo.substr(1);
-
+            var returnPseudo = inputPseudo.substr(1);
 
             // Replace left and right parens
-            pseudo = pseudo.replace(/\(/g, '\\(');
-            pseudo = pseudo.replace(/\)/g, '\\)');
+            returnPseudo = returnPseudo.replace(/\(/g, '\\(');
+            returnPseudo = returnPseudo.replace(/\)/g, '\\)');
 
-            return '.\\:' + pseudo;
+            //  only use whitelist if it has contents
+            if (options.psuedoClassWhitelist &&
+              options.psuedoClassWhitelist.length > 0) {
+              //  if the class is not in the whitelist - ignore
+              if (!pseudoClassWhitelist[returnPseudo]) {
+                return inputPseudo;
+              }
+            }
+
+            return '.' + prefix + returnPseudo;
           });
 
           // Add all combinations of pseudo selectors/pseudo styles given a
