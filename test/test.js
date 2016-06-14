@@ -38,3 +38,26 @@ test('split `rule.selector`', t => {
 
   return run(t, selectors, selectors, { });
 });
+
+
+test('optional prefixes', t => {
+
+  const expectedOut = read(
+    './fixtures/prefix-pseudos.out.css',
+    'utf-8'
+  );
+
+  return run(t, inCSS, expectedOut, { prefix: 'pseudo-class-' });
+});
+
+
+test('whitelist', t => {
+
+  const expectedOut = read(
+    './fixtures/whitelist-pseudos.out.css',
+    'utf-8'
+  );
+
+  return run(t, inCSS, expectedOut,
+    { psuedoClassWhitelist: ['hover', 'active', 'focus'] });
+});
