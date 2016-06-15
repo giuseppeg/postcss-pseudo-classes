@@ -32,9 +32,3 @@ test('should add all combinations (slower) of pseudoclass selectors ' +
 
   return run(t, inCSS, expectedOut, { allCombinations: true });
 });
-
-test('split `rule.selector`', t => {
-  const selectors = read('./fixtures/selector-splitting.css', 'utf-8');
-
-  return run(t, selectors, selectors, { });
-});

@@ -17,7 +17,7 @@ module.exports = postcss.plugin('postcss-pseudo-classes', function (options) {
     css.walkRules(function (rule) {
       var combinations;
 
-      rule.selector.split(/\s*,\s*/g).forEach(function (selector) {
+      rule.selectors.forEach(function (selector) {
         // Ignore some popular things that are never useful
         if (blacklist[selector]) {
           return;
