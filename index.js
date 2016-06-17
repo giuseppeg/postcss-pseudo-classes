@@ -17,7 +17,7 @@ module.exports = postcss.plugin('postcss-pseudo-classes', function (options) {
 
   if (Array.isArray(options.restrictTo) && options.restrictTo.length) {
     restrictTo = options.restrictTo.reduce(function (target, pseudoClass) {
-      var finalClass = pseudoClass.charAt(0) === ':' ? '' : ':' +
+      var finalClass = (pseudoClass.charAt(0) === ':' ? '' : ':') +
         pseudoClass.replace(/\(.*/g, '');
       if (!target.hasOwnProperty(finalClass)) {
         target[finalClass] = true;
