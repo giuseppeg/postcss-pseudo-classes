@@ -29,6 +29,9 @@ test('should add all combinations (slower) of pseudoclass selectors ' +
 test('should add pseudoclass selectors from a list and ignore the rest', t => {
   const input = read('./fixtures/pseudos-restricted.css');
   const expectedOut = read('./fixtures/pseudos-restricted.out.css');
-  const options = { restrictTo: ['nth-child', 'hover'], allCombinations: true };
+  const options = {
+    restrictTo: ['nth-child', 'hover', 'active'],
+    allCombinations: true
+  };
   return run(t, input, expectedOut, options);
 });
