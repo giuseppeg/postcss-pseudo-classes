@@ -35,9 +35,9 @@ a.\:nth-child\(5\) {
 }
 
 a:hover:focus,
-a.\:focus:hover,
+a:hover.\:focus,
 a.\:hover:focus,
-a.\:focus.\:hover {
+a.\:hover.\:focus {
   font-weight: bold;
 }
 
@@ -60,23 +60,23 @@ a.\:hover::before {
 }
 
 a:active:focus:hover::before,
-a.\:hover:active:focus::before,
-a.\:focus:active:hover::before,
-a.\:hover.\:focus:active::before,
+a:active:focus.\:hover::before,
+a:active.\:focus:hover::before,
+a:active.\:focus.\:hover::before,
 a.\:active:focus:hover::before,
-a.\:hover.\:active:focus::before,
-a.\:focus.\:active:hover::before,
-a.\:hover.\:focus.\:active::before {
+a.\:active:focus.\:hover::before,
+a.\:active.\:focus:hover::before,
+a.\:active.\:focus.\:hover::before {
   border-bottom-color: blue;
 }
 
 a:active:focus + div:hover,
-a.\:focus:active + div:hover,
+a:active.\:focus + div:hover,
 a.\:active:focus + div:hover,
-a.\:focus.\:active + div:hover,
+a.\:active.\:focus + div:hover,
 a:active:focus + div.\:hover,
-a.\:focus:active + div.\:hover,
+a:active.\:focus + div.\:hover,
 a.\:active:focus + div.\:hover,
-a.\:focus.\:active + div.\:hover {
+a.\:active.\:focus + div.\:hover {
   color: magenta;
 }

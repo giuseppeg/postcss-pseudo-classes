@@ -13,6 +13,19 @@ module.exports = postcss.plugin('postcss-pseudo-classes', function (options) {
     blacklist[blacklistItem] = true;
   });
 
+  var restrictTo;
+
+  if (Array.isArray(options.restrictTo) && options.restrictTo.length) {
+    restrictTo = options.restrictTo.reduce(function (target, pseudoClass) {
+      var finalClass = (pseudoClass.charAt(0) === ':' ? '' : ':') +
+        pseudoClass.replace(/\(.*/g, '');
+      if (!target.hasOwnProperty(finalClass)) {
+        target[finalClass] = true;
+      }
+      return target;
+    }, {});
+  }
+
   return function (css) {
     css.walkRules(function (rule) {
       var combinations;
@@ -42,7 +55,17 @@ module.exports = postcss.plugin('postcss-pseudo-classes', function (options) {
             0,
             selectorPart.length - pseudos.join('').length
           );
+
           var classPseudos = pseudos.map(function (pseudo) {
+            // restrictTo a subset of pseudo classes
+            if (
+              blacklist[pseudo] ||
+              restrictTo &&
+              !restrictTo[pseudo.replace(/\(.*/g, '')]
+            ) {
+              return pseudo;
+            }
+
             // Ignore pseudo-elements!
             if (pseudo.match(/^::/)) {
               return pseudo;
@@ -59,7 +82,6 @@ module.exports = postcss.plugin('postcss-pseudo-classes', function (options) {
             // Kill the colon
             pseudo = pseudo.substr(1);
 
-
             // Replace left and right parens
             pseudo = pseudo.replace(/\(/g, '\\(');
             pseudo = pseudo.replace(/\)/g, '\\)');
@@ -72,8 +94,7 @@ module.exports = postcss.plugin('postcss-pseudo-classes', function (options) {
           if (options.allCombinations) {
             combinations = createCombinations(
               pseudos,
-              classPseudos,
-              selectorConcat
+              classPseudos
             );
             pseudoedSelectorParts[index] = [];
 
@@ -83,7 +104,6 @@ module.exports = postcss.plugin('postcss-pseudo-classes', function (options) {
           } else {
             pseudoedSelectorParts.push(baseSelector + classPseudos.join(''));
           }
-
         });
 
         if (options.allCombinations) {
@@ -110,16 +130,16 @@ module.exports = postcss.plugin('postcss-pseudo-classes', function (options) {
 });
 
 // a.length === b.length
-function createCombinations(a, b, fn) {
+function createCombinations(a, b) {
   var combinations = [''];
   var newCombinations;
   for (var i = 0, len = a.length; i < len; i += 1) {
     newCombinations = [];
     combinations.forEach(function (combination) {
-      newCombinations.push(fn(combination, a[i]));
+      newCombinations.push(combination + a[i]);
       // Don't repeat work.
       if (a[i] !== b[i]) {
-        newCombinations.push(fn(combination, b[i]));
+        newCombinations.push(combination + b[i]);
       }
     });
     combinations = newCombinations;
@@ -141,14 +161,6 @@ function createSerialCombinations(arr, fn) {
     combinations = newCombinations;
   });
   return combinations;
-}
-
-// Returns a valid selector given pseudo-selector/pseudo-styles.
-function selectorConcat(ps1, ps2) {
-  if (ps2[0] === '.') {
-    return ps2 + ps1;
-  }
-  return ps1 + ps2;
 }
 
 function appendWithSpace(a, b) {

@@ -1,0 +1,7 @@
+:active {}
+.a:hover {}
+.a:focus:hover {}
+.a + .b:hover {}
+.a:before + .a:not(.c) {}
+.a:nth-child(2) {}
+.a:focus:hover:active {}
