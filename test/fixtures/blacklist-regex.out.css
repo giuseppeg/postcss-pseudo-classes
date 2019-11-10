@@ -1,0 +1,15 @@
+:host {
+  color: blue;
+}
+
+:host-context(a) {
+  color: blue;
+}
+
+:host([disabled]) {
+  opacity: .4;
+}
+
+:host([enabled]) {
+  opacity: 1;
+}

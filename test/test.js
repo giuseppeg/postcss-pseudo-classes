@@ -1,17 +1,18 @@
 import postcss from 'postcss';
 import { readFileSync } from 'fs';
+import path from 'path';
 import test from 'ava';
 
 import plugin from '../';
-
-const read = fileName => readFileSync(fileName, 'utf-8');
+const read = fileName => readFileSync(
+  path.resolve(__dirname, fileName), 'utf-8');
 const inCSS = read('./fixtures/pseudos.css');
 
 function run(t, input, output, opts = { }) {
   return postcss([ plugin(opts) ]).process(input.trim())
     .then( result => {
-      t.same(result.css, output.trim());
-      t.same(result.warnings().length, 0);
+      t.is(result.css, output.trim());
+      t.is(result.warnings().length, 0);
     });
 }
 
@@ -35,4 +36,10 @@ test('should add pseudoclass selectors from a list and ignore the rest', t => {
     'active'
   ];
   return run(t, input, expectedOut, { allCombinations: true, restrictTo });
+});
+
+test('should blacklist regExp', t => {
+  const input = read('./fixtures/blacklist-regex.css');
+  const expectedOut = read('./fixtures/blacklist-regex.out.css');
+  return run(t, input, expectedOut, { allCombinations: true });
 });

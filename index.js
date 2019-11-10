@@ -5,15 +5,21 @@ module.exports = postcss.plugin('postcss-pseudo-classes', function (options) {
   options.preserveBeforeAfter = options.preserveBeforeAfter || true;
 
   // Backwards compatibility--we always by default ignored `:root`.
-  var blacklist = {
-    ':root': true,
-    ':host': true,
-    ':host-context': true
-  };
+  let blacklist = [
+    ':root',
+    ':host',
+    ':host\((.*)\)',
+    ':host-context\((.*)\)'
+  ];
 
-  (options.blacklist || []).forEach(function (blacklistItem) {
-    blacklist[blacklistItem] = true;
-  });
+  // add user's blacklist
+  if (options.hasOwnProperty('blacklist')) {
+    for (const o of options.blacklist) {
+      blacklist.push(o);
+    }
+    // get array with only unique values
+    blacklist = [...new Set(blacklist)];
+  }
 
   var restrictTo;
 
@@ -34,9 +40,7 @@ module.exports = postcss.plugin('postcss-pseudo-classes', function (options) {
 
       rule.selectors.forEach(function (selector) {
         // Ignore some popular things that are never useful
-        // ignore css pseudo class functions, like :host(...), :host-context(...)
-        // do not process selectors that start with blacklisted string
-        if (blacklist[selector] || selector.match(/.+?(?=\()/)) {
+        if (isPseudoBlacklisted(blacklist, selector)) {
           return;
         }
 
@@ -63,7 +67,6 @@ module.exports = postcss.plugin('postcss-pseudo-classes', function (options) {
           var classPseudos = pseudos.map(function (pseudo) {
             // restrictTo a subset of pseudo classes
             if (
-              blacklist[pseudo] ||
               restrictTo &&
               !restrictTo[pseudo.replace(/\(.*/g, '')]
             ) {
@@ -132,6 +135,13 @@ module.exports = postcss.plugin('postcss-pseudo-classes', function (options) {
     });
   };
 });
+
+// check if pseudo is not blacklisted
+function isPseudoBlacklisted(blacklist, pseudoInput) {
+  return blacklist.some((check) => {
+    return pseudoInput.match(new RegExp(check));
+  });
+}
 
 // a.length === b.length
 function createCombinations(a, b) {
