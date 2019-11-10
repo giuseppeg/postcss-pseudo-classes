@@ -20,10 +20,10 @@
     "postcss": "^5.0.10"
   },
   "devDependencies": {
-    "ava": "^0.7.0",
+    "ava": "^2.0.0",
     "eslint": "^1.10.2"
   },
   "scripts": {
-    "test": "ava test/ && eslint *.js **/*js"
+    "test": "ava test/test.js && eslint *.js **/*js"
   }
 }
