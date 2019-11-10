@@ -9,6 +9,8 @@ module.exports = postcss.plugin('postcss-pseudo-classes', function (options) {
     ':root': true
   };
 
+  var prefix = options.prefix || '\\:';
+
   (options.blacklist || []).forEach(function (blacklistItem) {
     blacklist[blacklistItem] = true;
   });
@@ -86,7 +88,7 @@ module.exports = postcss.plugin('postcss-pseudo-classes', function (options) {
             pseudo = pseudo.replace(/\(/g, '\\(');
             pseudo = pseudo.replace(/\)/g, '\\)');
 
-            return '.\\:' + pseudo;
+            return '.' + prefix +  pseudo;
           });
 
           // Add all combinations of pseudo selectors/pseudo styles given a
