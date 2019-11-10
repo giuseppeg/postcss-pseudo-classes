@@ -6,7 +6,9 @@ module.exports = postcss.plugin('postcss-pseudo-classes', function (options) {
 
   // Backwards compatibility--we always by default ignored `:root`.
   var blacklist = {
-    ':root': true
+    ':root': true,
+    ':host': true,
+    ':host-context': true
   };
 
   (options.blacklist || []).forEach(function (blacklistItem) {
@@ -32,7 +34,9 @@ module.exports = postcss.plugin('postcss-pseudo-classes', function (options) {
 
       rule.selectors.forEach(function (selector) {
         // Ignore some popular things that are never useful
-        if (blacklist[selector]) {
+        // ignore css pseudo class functions, like :host(...), :host-context(...)
+        // do not process selectors that start with blacklisted string
+        if (blacklist[selector] || selector.match(/.+?(?=\()/)) {
           return;
         }
 
