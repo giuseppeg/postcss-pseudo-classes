@@ -6,7 +6,9 @@ module.exports = postcss.plugin('postcss-pseudo-classes', function (options) {
 
   // Backwards compatibility--we always by default ignored `:root`.
   var blacklist = {
-    ':root': true
+    ':root':         true,
+    ':host':         true,
+    ':host-context': true
   };
 
   var prefix = options.prefix || '\\:';
@@ -59,11 +61,12 @@ module.exports = postcss.plugin('postcss-pseudo-classes', function (options) {
           );
 
           var classPseudos = pseudos.map(function (pseudo) {
+            var pseudoToCheck = pseudo.replace(/\(.*/g, '');
             // restrictTo a subset of pseudo classes
             if (
-              blacklist[pseudo] ||
+              blacklist[pseudoToCheck] ||
               restrictTo &&
-              !restrictTo[pseudo.replace(/\(.*/g, '')]
+              !restrictTo[pseudoToCheck]
             ) {
               return pseudo;
             }

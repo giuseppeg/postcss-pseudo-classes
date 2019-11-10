@@ -1,0 +1,23 @@
+:root {
+  color: blue;
+}
+
+:host {
+  color: blue;
+}
+
+:host-context(a) {
+  color: blue;
+}
+
+:host([disabled]) {
+  opacity: .4;
+}
+
+:host([enabled]) {
+  opacity: 1;
+}
+
+a:hover, :host {
+  color: blue;
+}
