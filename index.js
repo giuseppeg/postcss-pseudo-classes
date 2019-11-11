@@ -23,7 +23,7 @@ module.exports = postcss.plugin('postcss-pseudo-classes', function (options) {
     restrictTo = options.restrictTo.reduce(function (target, pseudoClass) {
       var finalClass = (pseudoClass.charAt(0) === ':' ? '' : ':') +
         pseudoClass.replace(/\(.*/g, '');
-      if (!target.hasOwnProperty(finalClass)) {
+      if (!Object.prototype.hasOwnProperty.call(target, finalClass)) {
         target[finalClass] = true;
       }
       return target;

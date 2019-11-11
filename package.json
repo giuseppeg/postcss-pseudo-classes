@@ -17,13 +17,13 @@
   },
   "homepage": "https://github.com/giuseppeg/postcss-pseudo-classes",
   "dependencies": {
-    "postcss": "^5.0.10"
+    "postcss": "^7.0.0"
   },
   "devDependencies": {
     "ava": "^2.0.0",
-    "eslint": "^1.10.2"
+    "eslint": "^6.0.0"
   },
   "scripts": {
-    "test": "ava test/test.js && eslint *.js **/*js"
+    "test": "ava test/test.js && eslint *.js test/*.js"
   }
 }

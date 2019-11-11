@@ -1,15 +1,17 @@
-import postcss from 'postcss';
-import { readFileSync } from 'fs';
-import { join as joinPath } from 'path';
-import test from 'ava';
+/* eslint-env es6 */
 
-import plugin from '../';
+const postcss = require('postcss');
+const readFileSync = require('fs').readFileSync;
+const joinPath = require('path').join;
+const test = require('ava');
+
+const plugin = require('../');
 
 const read = fileName => readFileSync(joinPath(__dirname, fileName), 'utf-8');
 const inCSS = read('./fixtures/pseudos.css');
 
 function run(t, input, output, opts = { }) {
-  return postcss([ plugin(opts) ]).process(input.trim())
+  return postcss([ plugin(opts) ]).process(input.trim(), { from: undefined })
     .then( result => {
       t.is(result.css, output.trim());
       t.is(result.warnings().length, 0);
