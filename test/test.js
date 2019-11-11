@@ -43,3 +43,11 @@ test('should ignore pseudoclass selections in the blacklist', t => {
   const expectedOut = read('./fixtures/blacklist.out.css');
   return run(t, input, expectedOut, { allCombinations: true });
 });
+
+test('optional prefixes', t => {
+
+  const expectedOut = read('./fixtures/prefix.out.css'
+  );
+
+  return run(t, inCSS, expectedOut, { prefix: 'pseudo-class-' });
+});
