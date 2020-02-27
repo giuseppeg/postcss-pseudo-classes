@@ -37,7 +37,11 @@ var pseudoclasses = require('postcss-pseudo-classes')({
 
   // default is `true`. If `false`, will generate
   // pseudo classes for `:before` and `:after`
-  preserveBeforeAfter: false
+  preserveBeforeAfter: false,
+
+  // default is `false`. If `true`, will wrap the companion 
+  // pseudo class in :global() to prevent it from being renamed
+  isModule: false
 });
 
 postcss([ pseudoclasses ])

@@ -84,14 +84,20 @@ module.exports = postcss.plugin('postcss-pseudo-classes', function (options) {
               return pseudo;
             }
 
+            // Ignore ':global' pseudo
+            if (pseudo.indexOf(':global') !== -1) return pseudo;
+
             // Kill the colon
             pseudo = pseudo.substr(1);
 
             // Replace left and right parens
             pseudo = pseudo.replace(/\(/g, '\\(');
             pseudo = pseudo.replace(/\)/g, '\\)');
+            
+            var prefixedPseudoClass = '.' + prefix +  pseudo;
 
-            return '.' + prefix +  pseudo;
+            // Wrap class in :global() to prevent css module rename
+            return options.isModule ? ':global(' + prefixedPseudoClass + ')' : prefixedPseudoClass;
           });
 
           // Add all combinations of pseudo selectors/pseudo styles given a
