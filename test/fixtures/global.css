@@ -1,0 +1,4 @@
+:global a {}
+:global(a) {}
+:global a:hover {}
+:global(a:hover) {}

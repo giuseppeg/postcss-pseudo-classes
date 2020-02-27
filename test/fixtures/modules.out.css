@@ -1,0 +1,18 @@
+:active,
+:global(.\:active) {}
+.a:hover,
+.a:global(.\:hover) {}
+.a:focus:hover,
+.a:global(.\:focus):global(.\:hover) {}
+.a + .b:hover,
+.a + .b:global(.\:hover) {}
+.a:before + .a:not(.c),
+.a:before + .a:global(.\:not\(.c\)) {}
+.a:nth-child(2),
+.a:global(.\:nth-child\(2\)) {}
+.a:focus:hover:active,
+.a:global(.\:focus):global(.\:hover):global(.\:active) {}
+:global a:hover,
+:global a:global(.\:hover) {}
+:global(a:hover),
+:global(a:global(.\:hover\)) {}

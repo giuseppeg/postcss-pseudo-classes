@@ -53,3 +53,15 @@ test('optional prefixes', t => {
 
   return run(t, inCSS, expectedOut, { prefix: 'pseudo-class-' });
 });
+
+test('should wrap pseudoclass in :global() if isModule', t => {
+  const input = read('./fixtures/modules.css');
+  const expectedOut = read('./fixtures/modules.out.css');
+  return run(t, input, expectedOut, { isModule: true });
+});
+
+test('should ignore :global pseudo selector', t => {
+  const input = read('./fixtures/global.css');
+  const expectedOut = read('./fixtures/global.out.css');
+  return run(t, input, expectedOut, {});
+});
