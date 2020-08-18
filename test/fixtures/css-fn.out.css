@@ -1,0 +1,25 @@
+:host(.selector) {
+  color: blue;
+}
+
+:host(:disabled),
+:host(.\:disabled) {
+  color: red;
+}
+
+:host(:active),
+:host(.\:active) {
+  color: yellow;
+}
+
+:not(:host),
+:not(.\:host),
+.\:not(:host),
+.\:not(.\:host) {
+  color: blue;
+}
+
+:not(.selected),
+.\:not\(.selected\) {
+  color: orange;
+}
