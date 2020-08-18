@@ -53,3 +53,10 @@ test('optional prefixes', t => {
 
   return run(t, inCSS, expectedOut, { prefix: 'pseudo-class-' });
 });
+
+test('should ignore css host function', t => {
+  const input = read('./fixtures/css-fn.css');
+  const expectedOut = read('./fixtures/css-fn.out.css');
+  return run(t, input, expectedOut, { allCombinations: true });
+
+});

@@ -87,9 +87,16 @@ module.exports = postcss.plugin('postcss-pseudo-classes', function (options) {
             // Kill the colon
             pseudo = pseudo.substr(1);
 
-            // Replace left and right parens
-            pseudo = pseudo.replace(/\(/g, '\\(');
-            pseudo = pseudo.replace(/\)/g, '\\)');
+            // check if pseudo is css function with opening and closing parentheses (.+)
+            if (pseudo.match(/\(.+\)/)) {
+              // Replace left and right parens
+              pseudo = pseudo.replace(/\(/g, '\\(');
+              pseudo = pseudo.replace(/\)/g, '\\)');
+            } else {
+              // Replace left and right parens
+              pseudo = pseudo.replace(/\(/g, '(');
+              pseudo = pseudo.replace(/\)/g, ')');
+            }
 
             return '.' + prefix +  pseudo;
           });
