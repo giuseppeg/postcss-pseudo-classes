@@ -65,6 +65,8 @@ module.exports = postcss.plugin('postcss-pseudo-classes', function (options) {
             // restrictTo a subset of pseudo classes
             if (
               blacklist[pseudoToCheck] ||
+              pseudoToCheck.split('.').some(item => blacklist[item]) ||
+              pseudoToCheck.split('#').some(item => blacklist[item]) ||
               restrictTo &&
               !restrictTo[pseudoToCheck]
             ) {

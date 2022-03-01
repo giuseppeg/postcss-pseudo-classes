@@ -21,3 +21,39 @@
 a:hover, :host {
   color: blue;
 }
+
+.block .element:active {
+  color: blue;
+}
+
+:host .block .element:active {
+  color: blue;
+}
+
+/*test multiple pseudo classes on one element*/
+.element:last-child:active {
+  color:blue
+}
+
+/*test multiple pseudo classes on one element but one is blacklisted (:host)
+ no useful css rule, but another pseudo class, like :nth-child could be added
+ by the user.
+ */
+.element:host:active {
+  color:blue
+}
+
+/*test :host (blacklisted) with modifier class on host (element)*/
+.hostVariant:host .block .element:active {
+  color: blue;
+}
+
+/*test :host (blacklisted) with modifier class on host (element)*/
+:host.hostVariant .block .element:active {
+  color: blue;
+}
+
+/*test :host (blacklisted) with id on host (element)*/
+:host#specialVariantId .block .element:active {
+  color: blue;
+}
