@@ -16,12 +16,13 @@
     "url": "https://github.com/giuseppeg/postcss-pseudo-classes/issues"
   },
   "homepage": "https://github.com/giuseppeg/postcss-pseudo-classes",
-  "dependencies": {
-    "postcss": "^7.0.0"
+  "peerDependencies": {
+    "postcss": "^8.0.0"
   },
   "devDependencies": {
     "ava": "^2.0.0",
-    "eslint": "^6.0.0"
+    "eslint": "^6.0.0",
+    "postcss": "^8.4.31"
   },
   "scripts": {
     "test": "ava test/test.js && eslint *.js test/*.js"

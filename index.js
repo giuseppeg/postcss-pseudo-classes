@@ -1,6 +1,4 @@
-var postcss = require('postcss');
-
-module.exports = postcss.plugin('postcss-pseudo-classes', function (options) {
+var plugin = function (options) {
   options = options || {};
   options.preserveBeforeAfter = options.preserveBeforeAfter || true;
 
@@ -30,109 +28,121 @@ module.exports = postcss.plugin('postcss-pseudo-classes', function (options) {
     }, {});
   }
 
-  return function (css) {
-    css.walkRules(function (rule) {
-      var combinations;
-
-      rule.selectors.forEach(function (selector) {
-        // Ignore some popular things that are never useful
-        if (blacklist[selector]) {
-          return;
-        }
-
-        var selectorParts = selector.split(' ');
-        var pseudoedSelectorParts = [];
-
-        selectorParts.forEach(function (selectorPart, index) {
-          var pseudos = selectorPart.match(/::?([^:]+)/g);
-
-          if (!pseudos) {
-            if (options.allCombinations) {
-              pseudoedSelectorParts[index] = [selectorPart];
-            } else {
-              pseudoedSelectorParts.push(selectorPart);
-            }
+  return {
+    postcssPlugin: 'postcss-pseudo-classes',
+    prepare: function () {
+      var fixed = []
+      return {
+        Rule: function (rule) {
+          if (fixed.indexOf(rule) !== -1) {
             return;
           }
+          fixed.push(rule);
 
-          var baseSelector = selectorPart.substr(
-            0,
-            selectorPart.length - pseudos.join('').length
-          );
+          var combinations;
 
-          var classPseudos = pseudos.map(function (pseudo) {
-            var pseudoToCheck = pseudo.replace(/\(.*/g, '');
-            // restrictTo a subset of pseudo classes
-            if (
-              blacklist[pseudoToCheck] ||
-              restrictTo &&
-              !restrictTo[pseudoToCheck]
-            ) {
-              return pseudo;
+          rule.selectors.forEach(function (selector) {
+            // Ignore some popular things that are never useful
+            if (blacklist[selector]) {
+              return;
             }
 
-            // Ignore pseudo-elements!
-            if (pseudo.match(/^::/)) {
-              return pseudo;
-            }
+            var selectorParts = selector.split(' ');
+            var pseudoedSelectorParts = [];
 
-            // Ignore ':before' and ':after'
-            if (
-              options.preserveBeforeAfter &&
-              [':before', ':after'].indexOf(pseudo) !== -1
-            ) {
-              return pseudo;
-            }
+            selectorParts.forEach(function (selectorPart, index) {
+              var pseudos = selectorPart.match(/::?([^:]+)/g);
 
-            // Kill the colon
-            pseudo = pseudo.substr(1);
+              if (!pseudos) {
+                if (options.allCombinations) {
+                  pseudoedSelectorParts[index] = [selectorPart];
+                } else {
+                  pseudoedSelectorParts.push(selectorPart);
+                }
+                return;
+              }
 
-            // Replace left and right parens
-            pseudo = pseudo.replace(/\(/g, '\\(');
-            pseudo = pseudo.replace(/\)/g, '\\)');
+              var baseSelector = selectorPart.substr(
+                0,
+                selectorPart.length - pseudos.join('').length
+              );
 
-            return '.' + prefix +  pseudo;
-          });
+              var classPseudos = pseudos.map(function (pseudo) {
+                var pseudoToCheck = pseudo.replace(/\(.*/g, '');
+                // restrictTo a subset of pseudo classes
+                if (
+                  blacklist[pseudoToCheck] ||
+                  restrictTo &&
+                  !restrictTo[pseudoToCheck]
+                ) {
+                  return pseudo;
+                }
 
-          // Add all combinations of pseudo selectors/pseudo styles given a
-          // selector with multiple pseudo styles.
-          if (options.allCombinations) {
-            combinations = createCombinations(
-              pseudos,
-              classPseudos
-            );
-            pseudoedSelectorParts[index] = [];
+                // Ignore pseudo-elements!
+                if (pseudo.match(/^::/)) {
+                  return pseudo;
+                }
 
-            combinations.forEach(function (combination) {
-              pseudoedSelectorParts[index].push(baseSelector + combination);
+                // Ignore ':before' and ':after'
+                if (
+                  options.preserveBeforeAfter &&
+                  [':before', ':after'].indexOf(pseudo) !== -1
+                ) {
+                  return pseudo;
+                }
+
+                // Kill the colon
+                pseudo = pseudo.substr(1);
+
+                // Replace left and right parens
+                pseudo = pseudo.replace(/\(/g, '\\(');
+                pseudo = pseudo.replace(/\)/g, '\\)');
+
+                return '.' + prefix +  pseudo;
+              });
+
+              // Add all combinations of pseudo selectors/pseudo styles given a
+              // selector with multiple pseudo styles.
+              if (options.allCombinations) {
+                combinations = createCombinations(
+                  pseudos,
+                  classPseudos
+                );
+                pseudoedSelectorParts[index] = [];
+
+                combinations.forEach(function (combination) {
+                  pseudoedSelectorParts[index].push(baseSelector + combination);
+                });
+              } else {
+                pseudoedSelectorParts.push(baseSelector + classPseudos.join(''));
+              }
             });
-          } else {
-            pseudoedSelectorParts.push(baseSelector + classPseudos.join(''));
-          }
-        });
 
-        if (options.allCombinations) {
-          var serialCombinations = createSerialCombinations(
-            pseudoedSelectorParts,
-            appendWithSpace
-          );
+            if (options.allCombinations) {
+              var serialCombinations = createSerialCombinations(
+                pseudoedSelectorParts,
+                appendWithSpace
+              );
 
-          serialCombinations.forEach(function (combination) {
-            addSelector(combination);
+              serialCombinations.forEach(function (combination) {
+                addSelector(combination);
+              });
+            } else {
+              addSelector(pseudoedSelectorParts.join(' '));
+            }
+
+            function addSelector(newSelector) {
+              if (newSelector && newSelector !== selector) {
+                rule.selector += ',\n' + newSelector;
+              }
+            }
           });
-        } else {
-          addSelector(pseudoedSelectorParts.join(' '));
         }
-
-        function addSelector(newSelector) {
-          if (newSelector && newSelector !== selector) {
-            rule.selector += ',\n' + newSelector;
-          }
-        }
-      });
-    });
-  };
-});
+      }
+    }
+  }
+}
+plugin.postcss = true
 
 // a.length === b.length
 function createCombinations(a, b) {
@@ -174,3 +184,5 @@ function appendWithSpace(a, b) {
   }
   return a + b;
 }
+
+module.exports = plugin
