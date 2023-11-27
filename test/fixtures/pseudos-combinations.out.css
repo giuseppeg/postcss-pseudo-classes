@@ -1,0 +1,82 @@
+
+/**
+ * Comment.
+ */
+
+a {
+  text-decoration: none;
+}
+
+a:hover,
+a.\:hover {
+  text-decoration: underline;
+}
+
+a:active,
+a.\:active {
+  font-weight: bold;
+}
+
+a:hover,
+a:focus,
+a.\:hover,
+a.\:focus {
+  font-weight: bold;
+}
+
+a.lol:active,
+a.lol.\:active {
+  font-weight: normal;
+}
+
+a:nth-child(5),
+a.\:nth-child\(5\) {
+  border: 1px solid papayawhip;
+}
+
+a:hover:focus,
+a:hover.\:focus,
+a.\:hover:focus,
+a.\:hover.\:focus {
+  font-weight: bold;
+}
+
+a:before {
+  color: white;
+}
+
+a::before {
+  color: white;
+}
+
+a:before,
+a::before {
+  color: white;
+}
+
+a:hover::before,
+a.\:hover::before {
+  border-top-color: blue;
+}
+
+a:active:focus:hover::before,
+a:active:focus.\:hover::before,
+a:active.\:focus:hover::before,
+a:active.\:focus.\:hover::before,
+a.\:active:focus:hover::before,
+a.\:active:focus.\:hover::before,
+a.\:active.\:focus:hover::before,
+a.\:active.\:focus.\:hover::before {
+  border-bottom-color: blue;
+}
+
+a:active:focus + div:hover,
+a:active.\:focus + div:hover,
+a.\:active:focus + div:hover,
+a.\:active.\:focus + div:hover,
+a:active:focus + div.\:hover,
+a:active.\:focus + div.\:hover,
+a.\:active:focus + div.\:hover,
+a.\:active.\:focus + div.\:hover {
+  color: magenta;
+}

@@ -1,0 +1,68 @@
+
+/**
+ * Comment.
+ */
+
+a {
+  text-decoration: none;
+}
+
+a:hover,
+a.pseudo-class-hover {
+  text-decoration: underline;
+}
+
+a:active,
+a.pseudo-class-active {
+  font-weight: bold;
+}
+
+a:hover,
+a:focus,
+a.pseudo-class-hover,
+a.pseudo-class-focus {
+  font-weight: bold;
+}
+
+a.lol:active,
+a.lol.pseudo-class-active {
+  font-weight: normal;
+}
+
+a:nth-child(5),
+a.pseudo-class-nth-child\(5\) {
+  border: 1px solid papayawhip;
+}
+
+a:hover:focus,
+a.pseudo-class-hover.pseudo-class-focus {
+  font-weight: bold;
+}
+
+a:before {
+  color: white;
+}
+
+a::before {
+  color: white;
+}
+
+a:before,
+a::before {
+  color: white;
+}
+
+a:hover::before,
+a.pseudo-class-hover::before {
+  border-top-color: blue;
+}
+
+a:active:focus:hover::before,
+a.pseudo-class-active.pseudo-class-focus.pseudo-class-hover::before {
+  border-bottom-color: blue;
+}
+
+a:active:focus + div:hover,
+a.pseudo-class-active.pseudo-class-focus + div.pseudo-class-hover {
+  color: magenta;
+}
