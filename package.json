@@ -1,6 +1,6 @@
 {
   "name": "postcss-pseudo-classes",
-  "version": "1.0.0",
+  "version": "0.4.0",
   "description": "PostCSS plugin to convert pseudo-classes to classes for testing purposes",
   "keywords": [
     "postcss",
@@ -11,7 +11,10 @@
   ],
   "author": "Giuseppe Gurgone",
   "license": "MIT",
-  "repository": "giuseppeg/postcss-pseudo-classes",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/giuseppeg/postcss-pseudo-classes.git"
+  },
   "bugs": {
     "url": "https://github.com/giuseppeg/postcss-pseudo-classes/issues"
   },
