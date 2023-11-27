@@ -1,6 +1,6 @@
 {
   "name": "postcss-pseudo-classes",
-  "version": "0.2.1",
+  "version": "1.0.0",
   "description": "PostCSS plugin to convert pseudo-classes to classes for testing purposes",
   "keywords": [
     "postcss",
