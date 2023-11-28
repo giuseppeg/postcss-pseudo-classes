@@ -4,8 +4,8 @@ var plugin = function (options) {
 
   // Backwards compatibility--we always by default ignored `:root`.
   var blacklist = {
-    ':root':         true,
-    ':host':         true,
+    ':root': true,
+    ':host': true,
     ':host-context': true
   };
 
@@ -19,7 +19,8 @@ var plugin = function (options) {
 
   if (Array.isArray(options.restrictTo) && options.restrictTo.length) {
     restrictTo = options.restrictTo.reduce(function (target, pseudoClass) {
-      var finalClass = (pseudoClass.charAt(0) === ':' ? '' : ':') +
+      var finalClass =
+        (pseudoClass.charAt(0) === ':' ? '' : ':') +
         pseudoClass.replace(/\(.*/g, '');
       if (!Object.prototype.hasOwnProperty.call(target, finalClass)) {
         target[finalClass] = true;
@@ -31,7 +32,7 @@ var plugin = function (options) {
   return {
     postcssPlugin: 'postcss-pseudo-classes',
     prepare: function () {
-      var fixed = []
+      var fixed = [];
       return {
         Rule: function (rule) {
           if (fixed.indexOf(rule) !== -1) {
@@ -72,8 +73,7 @@ var plugin = function (options) {
                 // restrictTo a subset of pseudo classes
                 if (
                   blacklist[pseudoToCheck] ||
-                  restrictTo &&
-                  !restrictTo[pseudoToCheck]
+                  (restrictTo && !restrictTo[pseudoToCheck])
                 ) {
                   return pseudo;
                 }
@@ -98,23 +98,22 @@ var plugin = function (options) {
                 pseudo = pseudo.replace(/\(/g, '\\(');
                 pseudo = pseudo.replace(/\)/g, '\\)');
 
-                return '.' + prefix +  pseudo;
+                return '.' + prefix + pseudo;
               });
 
               // Add all combinations of pseudo selectors/pseudo styles given a
               // selector with multiple pseudo styles.
               if (options.allCombinations) {
-                combinations = createCombinations(
-                  pseudos,
-                  classPseudos
-                );
+                combinations = createCombinations(pseudos, classPseudos);
                 pseudoedSelectorParts[index] = [];
 
                 combinations.forEach(function (combination) {
                   pseudoedSelectorParts[index].push(baseSelector + combination);
                 });
               } else {
-                pseudoedSelectorParts.push(baseSelector + classPseudos.join(''));
+                pseudoedSelectorParts.push(
+                  baseSelector + classPseudos.join('')
+                );
               }
             });
 
@@ -138,11 +137,11 @@ var plugin = function (options) {
             }
           });
         }
-      }
+      };
     }
-  }
-}
-plugin.postcss = true
+  };
+};
+plugin.postcss = true;
 
 // a.length === b.length
 function createCombinations(a, b) {
@@ -185,4 +184,4 @@ function appendWithSpace(a, b) {
   return a + b;
 }
 
-module.exports = plugin
+module.exports = plugin;
