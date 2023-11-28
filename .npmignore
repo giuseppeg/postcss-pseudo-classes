@@ -6,3 +6,6 @@ npm-debug.log
 test/
 .travis.yml
 .prettierrc
+.eslintrc
+.editorconfig
+CHANGELOG.md
