@@ -48,6 +48,10 @@ var plugin = function (options) {
               return;
             }
 
+            if (!selector.includes(':')) {
+              return;
+            }
+
             var selectorParts = selector.split(' ');
             var pseudoedSelectorParts = [];
 
