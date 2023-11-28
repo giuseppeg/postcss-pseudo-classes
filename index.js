@@ -1,3 +1,12 @@
+var interactiveStates = {
+  ':hover': true,
+  ':active': true,
+  ':focus': true,
+  ':visited': true,
+  ':focus-visible': true,
+  ':focus-within': true
+};
+
 var plugin = function (options) {
   options = options || {};
   options.preserveBeforeAfter = options.preserveBeforeAfter || true;
@@ -27,6 +36,8 @@ var plugin = function (options) {
       }
       return target;
     }, {});
+  } else {
+    restrictTo = interactiveStates;
   }
 
   return {

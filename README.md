@@ -43,7 +43,8 @@ require('postcss-pseudo-classes')({
   blacklist: [],
 
   // (optional) create classes for a restricted list of selectors
-  // N.B. the colon (:) is optional
+  // N.B. the colon (:). By default it uses all
+  // interactive pseudo-classes.
   restrictTo: [':nth-child', 'hover'],
 
   // default is `false`. If `true`, will output CSS
