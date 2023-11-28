@@ -38,6 +38,9 @@ var pseudoclasses = require('postcss-pseudo-classes')({
   // default is `true`. If `false`, will generate
   // pseudo classes for `:before` and `:after`
   preserveBeforeAfter: false
+
+  // default is `\:`. It will be added to pseudo classes.
+  prefix: '\\:'
 });
 
 postcss([ pseudoclasses ])
