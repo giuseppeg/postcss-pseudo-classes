@@ -6,7 +6,22 @@ var plugin = function (options) {
   var blacklist = {
     ':root': true,
     ':host': true,
-    ':host-context': true
+    ':host-context': true,
+    ':where': true,
+    ':is': true,
+    ':not': true,
+    ':has': true,
+    ':nth-child': true,
+    ':nth-last-child': true,
+    ':nth-of-type': true,
+    ':nth-last-of-type': true,
+    ':first-child': true,
+    ':last-child': true,
+    ':first-of-type': true,
+    ':last-of-type': true,
+    ':only-child': true,
+    ':only-of-type': true,
+    ':empty': true
   };
 
   var prefix = options.prefix || '\\:';
