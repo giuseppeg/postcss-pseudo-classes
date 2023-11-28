@@ -29,5 +29,8 @@
   },
   "scripts": {
     "test": "ava test/test.js && eslint *.js test/*.js"
-  }
+  },
+  "files": [
+    "index.js"
+  ]
 }
