@@ -1,4 +1,4 @@
-var interactiveStates = {
+const INTERACTIVE_STATES = {
   ':hover': true,
   ':active': true,
   ':focus': true,
@@ -7,52 +7,51 @@ var interactiveStates = {
   ':focus-within': true
 };
 
-var plugin = function (options) {
-  options = options || {};
-  options.preserveBeforeAfter = options.preserveBeforeAfter || true;
+const plugin = function (options = {}) {
+  options.preserveBeforeAfter = options.preserveBeforeAfter ?? true;
 
   // Backwards compatibility--we always by default ignored `:root`.
-  var blacklist = {
+  const blacklist = {
     ':root': true,
     ':host': true,
     ':host-context': true
   };
 
-  var prefix = options.prefix || '\\:';
+  const prefix = options.prefix ?? '\\:';
 
-  var restrictTo;
+  let restrictTo;
   if (options.custom) {
-    var list;
+    let list;
     if (Array.isArray(options.custom)) {
       list = options.custom;
     } else {
-      list = options.custom(Object.keys(interactiveStates));
+      list = options.custom(Object.keys(INTERACTIVE_STATES));
     }
-    restrictTo = list.reduce(function (target, pseudoClass) {
-      var finalClass =
+    restrictTo = list.reduce((target, pseudoClass) => {
+      const finalClass =
         (pseudoClass.charAt(0) === ':' ? '' : ':') +
         pseudoClass.replace(/\(.*/g, '');
       target[finalClass] = true;
       return target;
     }, {});
   } else {
-    restrictTo = interactiveStates;
+    restrictTo = INTERACTIVE_STATES;
   }
 
   return {
     postcssPlugin: 'postcss-pseudo-classes',
-    prepare: function () {
-      var fixed = [];
+    prepare() {
+      const fixed = [];
       return {
-        Rule: function (rule) {
+        Rule(rule) {
           if (fixed.indexOf(rule) !== -1) {
             return;
           }
           fixed.push(rule);
 
-          var combinations;
+          let combinations;
 
-          rule.selectors.forEach(function (selector) {
+          rule.selectors.forEach(selector => {
             // Ignore some popular things that are never useful
             if (blacklist[selector]) {
               return;
@@ -62,11 +61,11 @@ var plugin = function (options) {
               return;
             }
 
-            var selectorParts = selector.split(' ');
-            var pseudoedSelectorParts = [];
+            const selectorParts = selector.split(' ');
+            const pseudoedSelectorParts = [];
 
-            selectorParts.forEach(function (selectorPart, index) {
-              var pseudos = selectorPart.match(/::?([^:]+)/g);
+            selectorParts.forEach((selectorPart, index) => {
+              const pseudos = selectorPart.match(/::?([^:]+)/g);
 
               if (!pseudos) {
                 if (options.allCombinations) {
@@ -77,13 +76,13 @@ var plugin = function (options) {
                 return;
               }
 
-              var baseSelector = selectorPart.substr(
+              const baseSelector = selectorPart.substr(
                 0,
                 selectorPart.length - pseudos.join('').length
               );
 
-              var classPseudos = pseudos.map(function (pseudo) {
-                var pseudoToCheck = pseudo.replace(/\(.*/g, '');
+              const classPseudos = pseudos.map(pseudo => {
+                const pseudoToCheck = pseudo.replace(/\(.*/g, '');
                 // restrictTo a subset of pseudo classes
                 if (!restrictTo[pseudoToCheck]) {
                   return pseudo;
@@ -118,7 +117,7 @@ var plugin = function (options) {
                 combinations = createCombinations(pseudos, classPseudos);
                 pseudoedSelectorParts[index] = [];
 
-                combinations.forEach(function (combination) {
+                combinations.forEach(combination => {
                   pseudoedSelectorParts[index].push(baseSelector + combination);
                 });
               } else {
@@ -129,12 +128,12 @@ var plugin = function (options) {
             });
 
             if (options.allCombinations) {
-              var serialCombinations = createSerialCombinations(
+              const serialCombinations = createSerialCombinations(
                 pseudoedSelectorParts,
                 appendWithSpace
               );
 
-              serialCombinations.forEach(function (combination) {
+              serialCombinations.forEach(combination => {
                 addSelector(combination);
               });
             } else {
@@ -156,11 +155,11 @@ plugin.postcss = true;
 
 // a.length === b.length
 function createCombinations(a, b) {
-  var combinations = [''];
-  var newCombinations;
-  for (var i = 0, len = a.length; i < len; i += 1) {
+  let combinations = [''];
+  let newCombinations;
+  for (let i = 0, len = a.length; i < len; i += 1) {
     newCombinations = [];
-    combinations.forEach(function (combination) {
+    combinations.forEach(combination => {
       newCombinations.push(combination + a[i]);
       // Don't repeat work.
       if (a[i] !== b[i]) {
@@ -174,12 +173,12 @@ function createCombinations(a, b) {
 
 // arr = [[list of 1st el], [list of 2nd el] ... etc]
 function createSerialCombinations(arr, fn) {
-  var combinations = [''];
-  var newCombinations;
-  arr.forEach(function (elements) {
+  let combinations = [''];
+  let newCombinations;
+  arr.forEach(elements => {
     newCombinations = [];
-    elements.forEach(function (element) {
-      combinations.forEach(function (combination) {
+    elements.forEach(element => {
+      combinations.forEach(combination => {
         newCombinations.push(fn(combination, element));
       });
     });
