@@ -20,20 +20,19 @@ var plugin = function (options) {
 
   var prefix = options.prefix || '\\:';
 
-  (options.blacklist || []).forEach(function (blacklistItem) {
-    blacklist[blacklistItem] = true;
-  });
-
   var restrictTo;
-
-  if (Array.isArray(options.restrictTo) && options.restrictTo.length) {
-    restrictTo = options.restrictTo.reduce(function (target, pseudoClass) {
+  if (options.custom) {
+    var list;
+    if (Array.isArray(options.custom)) {
+      list = options.custom;
+    } else {
+      list = options.custom(Object.keys(interactiveStates));
+    }
+    restrictTo = list.reduce(function (target, pseudoClass) {
       var finalClass =
         (pseudoClass.charAt(0) === ':' ? '' : ':') +
         pseudoClass.replace(/\(.*/g, '');
-      if (!Object.prototype.hasOwnProperty.call(target, finalClass)) {
-        target[finalClass] = true;
-      }
+      target[finalClass] = true;
       return target;
     }, {});
   } else {
@@ -86,10 +85,7 @@ var plugin = function (options) {
               var classPseudos = pseudos.map(function (pseudo) {
                 var pseudoToCheck = pseudo.replace(/\(.*/g, '');
                 // restrictTo a subset of pseudo classes
-                if (
-                  blacklist[pseudoToCheck] ||
-                  (restrictTo && !restrictTo[pseudoToCheck])
-                ) {
+                if (!restrictTo[pseudoToCheck]) {
                   return pseudo;
                 }
 
