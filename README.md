@@ -1,4 +1,4 @@
-# PostCSS Pseudo Classes [![Build Status][ci-img]][ci]
+# PostCSS Pseudo Classes
 
 [PostCSS] plugin to automatically add in companion classes
 where pseudo-selectors are used.
@@ -6,9 +6,24 @@ This allows you to add the class name to force the styling of a pseudo-selector,
 which can be really helpful for testing or being able
 to concretely reach all style states.
 
+Example:
+
+```css
+.some-selector:hover {
+  text-decoration: underline;
+}
+```
+
+yields
+
+```css
+.some-selector:hover,
+.some-selector.\:hover {
+  text-decoration: underline;
+}
+```
+
 [PostCSS]: https://github.com/postcss/postcss
-[ci-img]:  https://travis-ci.org/giuseppeg/postcss-pseudo-classes.svg
-[ci]:      https://travis-ci.org/giuseppeg/postcss-pseudo-classes
 
 ### Credits
 
@@ -20,10 +35,10 @@ This plugin is a port of [rework-pseudo-classes](https://github.com/SlexAxton/re
 $ npm install postcss-pseudo-classes
 ```
 
-## Example
+## Options
 
 ```js
-var pseudoclasses = require('postcss-pseudo-classes')({
+require('postcss-pseudo-classes')({
   // default contains `:root`.
   blacklist: [],
 
@@ -42,33 +57,6 @@ var pseudoclasses = require('postcss-pseudo-classes')({
   // default is `\:`. It will be added to pseudo classes.
   prefix: '\\:'
 });
-
-postcss([ pseudoclasses ])
-  .process(css)
-  .then(function (result) { console.log(result.css); });
-```
-
-### style.css
-
-```css
-.some-selector:hover {
-  text-decoration: underline;
-}
-```
-
-yields
-
-```css
-.some-selector:hover,
-.some-selector.\:hover {
-  text-decoration: underline;
-}
-```
-
-### usage
-
-```html
-<button class="some-selector :hover">howdy</button>
 ```
 
 ## Edge cases
