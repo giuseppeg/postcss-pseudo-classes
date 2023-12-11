@@ -60,7 +60,7 @@ require('postcss-pseudo-classes')({
 
 ## Edge cases
 
-* The plugin process only [user-action pseudo-classes](https://developer.mozilla.org/en-US/docs/Web/CSS/Pseudo-classes#user_action_pseudo-classes).
+* The plugin processes only [user-action pseudo-classes](https://developer.mozilla.org/en-US/docs/Web/CSS/Pseudo-classes#user_action_pseudo-classes).
 * Chained pseudo-selectors just become chained classes: `:focus:hover` becomes `.\:focus.\:hover`.
 
 ## Tests
