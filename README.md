@@ -40,7 +40,7 @@ $ npm install postcss-pseudo-classes
 ```js
 require('postcss-pseudo-classes')({
   // (optional) list of pseudo-classes to process. Can be an array or
-  // a function receiving default list and returning new one.
+  // a function receiving the default list of pseudo-classes and returning new one.
   custom: [
     ':hover', ':active', ':focus', ':visited', ':focus-visible', ':focus-within'
   ],
