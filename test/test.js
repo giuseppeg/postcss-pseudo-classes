@@ -36,8 +36,22 @@ test(
 test('should add pseudoclass selectors from a list and ignore the rest', t => {
   const input = read('./fixtures/pseudos-restricted.css');
   const expectedOut = read('./fixtures/pseudos-restricted.out.css');
-  const restrictTo = ['nth-child', ':hover', 'active'];
-  return run(t, input, expectedOut, { allCombinations: true, restrictTo });
+  return run(t, input, expectedOut, {
+    allCombinations: true,
+    custom: ['nth-child', ':hover', 'active']
+  });
+});
+
+test('should add pseudoclass selectors from a function', t => {
+  const input = read('./fixtures/pseudos-restricted.css');
+  const expectedOut = read('./fixtures/pseudos-restricted.out.css');
+  return run(t, input, expectedOut, {
+    allCombinations: true,
+    custom: list => {
+      t.truthy(list.includes(':focus'));
+      return ['nth-child', ':hover', 'active'];
+    }
+  });
 });
 
 test('should ignore pseudoclass selections in the blacklist', t => {

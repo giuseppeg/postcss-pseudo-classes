@@ -39,12 +39,11 @@ $ npm install postcss-pseudo-classes
 
 ```js
 require('postcss-pseudo-classes')({
-  // default contains `:root`.
-  blacklist: [],
-
-  // (optional) create classes for a restricted list of selectors
-  // N.B. the colon (:) is optional
-  restrictTo: [':nth-child', 'hover'],
+  // (optional) list of pseudo-classes to process. Can be an array or
+  // a function receiving the default list of pseudo-classes and returning new one.
+  custom: [
+    ':hover', ':active', ':focus', ':visited', ':focus-visible', ':focus-within'
+  ],
 
   // default is `false`. If `true`, will output CSS
   // with all combinations of pseudo styles/pseudo classes.
@@ -52,7 +51,7 @@ require('postcss-pseudo-classes')({
 
   // default is `true`. If `false`, will generate
   // pseudo classes for `:before` and `:after`
-  preserveBeforeAfter: false
+  preserveBeforeAfter: false,
 
   // default is `\:`. It will be added to pseudo classes.
   prefix: '\\:'
@@ -61,8 +60,7 @@ require('postcss-pseudo-classes')({
 
 ## Edge cases
 
-* This plugin escapes parenthesis so `:nth-child(5)` would look like `.class.\:nth-child\(5\)` and can be used as a regular class: `<button class=":nth-child(5)">howdy</button>`.
-* Pseudo-selectors with two colons are ignored entirely since they're a slightly different thing.
+* The plugin processes only [user-action pseudo-classes](https://developer.mozilla.org/en-US/docs/Web/CSS/Pseudo-classes#user_action_pseudo-classes).
 * Chained pseudo-selectors just become chained classes: `:focus:hover` becomes `.\:focus.\:hover`.
 
 ## Tests
