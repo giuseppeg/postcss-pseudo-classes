@@ -66,3 +66,8 @@ a:active:focus + div:hover,
 a.pseudo-class-active.pseudo-class-focus + div.pseudo-class-hover {
   color: magenta;
 }
+
+a:is(:hover, .current),
+a:is(.pseudo-class-hover, .current) {
+  color: firebrick;
+}

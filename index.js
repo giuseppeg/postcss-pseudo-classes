@@ -6,7 +6,8 @@ var plugin = function (options) {
   var blacklist = {
     ':root': true,
     ':host': true,
-    ':host-context': true
+    ':host-context': true,
+    ':is': true
   };
 
   var prefix = options.prefix || '\\:';

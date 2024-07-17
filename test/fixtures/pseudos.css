@@ -56,3 +56,7 @@ a:active:focus:hover::before {
 a:active:focus + div:hover {
   color: magenta;
 }
+
+a:is(:hover, .current) {
+  color: firebrick;
+}

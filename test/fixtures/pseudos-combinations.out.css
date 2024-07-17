@@ -80,3 +80,8 @@ a.\:active:focus + div.\:hover,
 a.\:active.\:focus + div.\:hover {
   color: magenta;
 }
+
+a:is(:hover, .current),
+a:is(.\:hover, .current) {
+  color: firebrick;
+}
